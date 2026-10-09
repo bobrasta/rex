@@ -9,7 +9,7 @@ composer install
 cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite      # default DB is SQLite; set DB_* in .env for MySQL
-php artisan migrate --seed          # creates the products table and loads the catalogue
+php artisan migrate                 # creates the tables and loads the starting catalogue
 php artisan serve
 ```
 
@@ -34,6 +34,14 @@ On a live server, point the web root at `public/`. The cart and shop scripts bui
 - Best sellers on the home page are the products with a `featured_position` (1 = first), ordered by that number.
 - The shop lists every product by `sort_order`. "You may also need" shows up to 4 others from the same category.
 - Images go in `public/assets/`; store the path as `assets/your-image.jpg`.
+
+## Deploying on Railway
+
+Railway builds from GitHub with Railpack (PHP version comes from `composer.json`). On every start it runs `php artisan migrate --force`, which creates the SQLite file if needed and loads the catalogue on a fresh database.
+
+Service variables: `APP_KEY` (from `php artisan key:generate --show`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `LOG_CHANNEL=stderr`.
+
+The default SQLite database lives in the container and is rebuilt from the seeder on each deploy, so product edits made on the server don't survive a redeploy. To edit products in production, add a Railway Postgres or MySQL service and point `DB_CONNECTION` / `DB_URL` at it.
 
 ## Before going live
 
