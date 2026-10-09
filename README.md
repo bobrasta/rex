@@ -37,7 +37,7 @@ On a live server, point the web root at `public/`. The cart and shop scripts bui
 
 ## Deploying on Railway
 
-Railway builds from GitHub with Railpack (PHP version comes from `composer.json`). On every start it runs `php artisan migrate --force`, which creates the SQLite file if needed and loads the catalogue on a fresh database.
+Railway builds from GitHub with Railpack (PHP version comes from `composer.json`). `railway.json` starts the app through `scripts/railway-start.sh`, which runs `php artisan migrate --force` (creating the SQLite file and loading the catalogue on a fresh database) and `php artisan optimize` before starting FrankenPHP.
 
 Service variables: `APP_KEY` (from `php artisan key:generate --show`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `LOG_CHANNEL=stderr`.
 
